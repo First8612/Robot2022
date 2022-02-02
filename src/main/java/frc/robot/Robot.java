@@ -67,26 +67,35 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
   }
 
-  /** This function is called periodically during teleoperated mode. */
+  /** This function is called periodically (about every 20 milliseconds) during teleoperated mode. */
   @Override
   public void teleopPeriodic() {
+    // driveFactor is a 0 to 1 value from the throttle axis on the joystick.
+    // I did this partially because I wanted to see if I could, and partially because
+    // it was too touchy.
     double driveFactor = 
       (m_controller.getRawAxis(axis_throttle) // will be -1 to 1
-      * -1 // reverse (forward is faster)
-      + 1) // 0 to 2
-      / 2; // 0 to 1
+      * -1 // reverse (forward is faster). When I first checked this, forward was -1, and back was 1, which is the opposite of what we want
+      + 1) // 0 to 2. shift it to the positive
+      / 2; // 0 to 1. divide it in half so that it will be 0 to 1
 
     if (m_spinRightButton.get()) {
+      // if the spin right button is being pressed, whip around to the right
       m_robotDrive.arcadeDrive(0, 1);
     } else if (m_spinLeftButton.get()) {
+      // if the spin left button is being pressed, whip around to the left
       m_robotDrive.arcadeDrive(0, -1);
     } else {
+      // if no spin button is pressed
 
       if (m_boostButton.get()) {
+        // if the boost button (trigger) is pressed, then override that drive factor all the way up to 1 for full speed.
         driveFactor = 1;
       }
 
-      m_robotDrive.arcadeDrive(m_controller.getRawAxis(axis_forwardBack) * driveFactor, m_controller.getRawAxis(axis_rotate) * 0.5);
+      double speed = m_controller.getRawAxis(axis_forwardBack) * driveFactor;
+      double rotation = m_controller.getRawAxis(axis_rotate) * driveFactor * 0.5; // multiplying by 0.5 because otherwise it's too touchy.
+      m_robotDrive.arcadeDrive(speed, rotation);
     }
 
   }
