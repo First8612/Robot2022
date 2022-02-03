@@ -4,13 +4,16 @@
 
 package frc.robot;
 
+// all of these are the "packages" or "libraries" that this code is using
+// we do this to avoid naming problems
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -19,13 +22,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * directory.
  */
 public class Robot extends TimedRobot {
-  private final int axis_sideToSide = 0;
   private final int axis_forwardBack = 1;
   private final int axis_rotate = 2;
   private final int axis_throttle = 3;
-  private final PWMSparkMax m_leftDrive = new PWMSparkMax(0);
-  private final PWMSparkMax m_rightDrive = new PWMSparkMax(1);
-  private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive);
+  public static CANSparkMax m_leftMotor = new CANSparkMax(1, MotorType.kBrushed);
+  public static CANSparkMax m_leftFollower = new CANSparkMax(2, MotorType.kBrushed);
+  public static CANSparkMax m_rightMotor = new CANSparkMax(3, MotorType.kBrushed);
+  public static CANSparkMax m_rightFollower = new CANSparkMax(4, MotorType.kBrushed);  
+  private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
   private final GenericHID m_controller = new Joystick(0);
   private final Timer m_timer = new Timer();
   private final JoystickButton m_boostButton = new JoystickButton(m_controller, 1);
@@ -41,7 +45,11 @@ public class Robot extends TimedRobot {
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
-    m_rightDrive.setInverted(true);
+
+    m_leftFollower.follow(m_leftMotor);
+    m_rightFollower.follow(m_rightMotor);
+    m_leftMotor.setInverted(true);
+
   }
 
   /** This function is run once each time the robot enters autonomous mode. */
@@ -75,16 +83,18 @@ public class Robot extends TimedRobot {
     // it was too touchy.
     double driveFactor = 
       (m_controller.getRawAxis(axis_throttle) // will be -1 to 1
-      * -1 // reverse (forward is faster). When I first checked this, forward was -1, and back was 1, which is the opposite of what we want
-      + 1) // 0 to 2. shift it to the positive
+      * 1 // reverse (forward is faster). When I first checked this, forward was -1, and back was 1, which is the opposite of what we want
+      + -1) // 0 to 2. shift it to the positive
       / 2; // 0 to 1. divide it in half so that it will be 0 to 1
+
+      System.out.print(driveFactor);
 
     if (m_spinRightButton.get()) {
       // if the spin right button is being pressed, whip around to the right
-      m_robotDrive.arcadeDrive(0, 1);
+      m_robotDrive.arcadeDrive(0, 0.5);
     } else if (m_spinLeftButton.get()) {
       // if the spin left button is being pressed, whip around to the left
-      m_robotDrive.arcadeDrive(0, -1);
+      m_robotDrive.arcadeDrive(0, -0.5);
     } else {
       // if no spin button is pressed
 
