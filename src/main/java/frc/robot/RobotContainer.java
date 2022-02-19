@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Commands.TakeADump;
 import frc.robot.Subsystems.*;
 
 /**
@@ -17,6 +18,7 @@ public class RobotContainer {
     private final int axis_rotate = 2;
     private final GenericHID m_controller = new Joystick(0);
     private final JoystickButton m_boostButton = new JoystickButton(m_controller, 1);
+    private final JoystickButton m_dumpButton = new JoystickButton(m_controller, 3);
 
     // The robot's subsystems
     private final Drivetrain m_robotDrive = new Drivetrain();
@@ -50,6 +52,9 @@ public class RobotContainer {
         m_boostButton
           .whenPressed(() -> m_robotDrive.setMaxOutput(1))
           .whenReleased(() -> m_robotDrive.setMaxOutput(0.5));
+
+        m_dumpButton
+            .whenPressed(new TakeADump());   
     }
   }
   
