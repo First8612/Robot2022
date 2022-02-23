@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Commands.ArmDown;
+import frc.robot.Commands.ArmUp;
 import frc.robot.Commands.TakeADump;
 import frc.robot.Subsystems.*;
 
@@ -18,7 +20,9 @@ public class RobotContainer {
     private final int axis_rotate = 2;
     private final GenericHID m_controller = new Joystick(0);
     private final JoystickButton m_boostButton = new JoystickButton(m_controller, 1);
-    private final JoystickButton m_dumpButton = new JoystickButton(m_controller, 4);
+    private final JoystickButton m_armUpButton = new JoystickButton(m_controller, 6);
+    private final JoystickButton m_armDownButton = new JoystickButton(m_controller, 4);
+    private final JoystickButton m_dumpButton = new JoystickButton(m_controller, 2);
     private final JoystickButton m_highGearButton = new JoystickButton(m_controller, 5);
     private final JoystickButton m_lowGearButton = new JoystickButton(m_controller, 3);
     private final JoystickButton m_pneumaticsStartButton = new JoystickButton(m_controller, 7);
@@ -58,8 +62,14 @@ public class RobotContainer {
           .whenPressed(() -> m_robotDrive.setMaxOutput(1))
           .whenReleased(() -> m_robotDrive.setMaxOutput(0.5));
 
+        m_armUpButton
+            .whenPressed(new ArmUp());
+            
+        m_armDownButton
+            .whenPressed(new ArmDown()); 
+        
         m_dumpButton
-            .whenPressed(new TakeADump());   
+            .whenPressed(new TakeADump());
 
         m_pneumaticsStartButton
           .whenPressed(() -> m_pneumatics.start());
