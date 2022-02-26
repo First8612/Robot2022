@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Commands.ArmDown;
@@ -31,9 +32,14 @@ public class RobotContainer {
     // The robot's subsystems
     private final Drivetrain m_robotDrive = new Drivetrain();
     private final Pneumatics m_pneumatics = new Pneumatics();
+    private final Intake m_intake = new Intake();
+    private final Bucket m_bucket = new Bucket();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
+      CommandScheduler.getInstance().registerSubsystem(m_intake);
+      CommandScheduler.getInstance().registerSubsystem(m_bucket);
+
       // Configure the button bindings
       configureButtonBindings();
   
@@ -72,10 +78,16 @@ public class RobotContainer {
             .whenPressed(new TakeADump());
 
         m_pneumaticsStartButton
-          .whenPressed(() -> m_pneumatics.start());
+          .whenPressed(() -> {
+            m_pneumatics.start();
+            m_intake.enable();
+          });
 
         m_pneumaticsStopButton
-          .whenPressed(() -> m_pneumatics.stop());
+          .whenPressed(() -> {
+            m_pneumatics.stop();
+            m_intake.disable();
+          });
 
         m_highGearButton
           .whenPressed(() -> m_pneumatics.setHighGear());

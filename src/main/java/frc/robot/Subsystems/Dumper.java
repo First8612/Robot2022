@@ -5,12 +5,15 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Dumper extends SubsystemBase {
-    private static CANSparkMax m_armMotorCanSparkMax = new CANSparkMax(5, MotorType.kBrushless);
+    private static CANSparkMax m_armMotorCanSparkMax = 
+        new CANSparkMax(Constants.ArmMotorNumber, MotorType.kBrushless);
     private static RelativeEncoder m_encoder = m_armMotorCanSparkMax.getEncoder();
-    private static double m_upStop = 10;
-    private static double m_speed = 0.1;
+    private static int m_motorRevsPerOutputRevs = 5 * 7 * 9;
+    private static double m_upStop = 0.1 * m_motorRevsPerOutputRevs;
+    private static double m_speed = 0.3;
 
     private static TravelingDirection m_armTraveling = TravelingDirection.Stopped;
 
@@ -22,6 +25,7 @@ public class Dumper extends SubsystemBase {
 
     public Dumper() {
         m_encoder.setPosition(0);
+        m_armMotorCanSparkMax.setOpenLoopRampRate(2); // set how fast the motor is allowed to speed up
     }
 
     public void armUp() {
