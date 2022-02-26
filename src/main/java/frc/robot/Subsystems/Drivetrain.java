@@ -13,15 +13,18 @@ public class Drivetrain extends SubsystemBase {
     private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
 
     public Drivetrain() {
-        m_robotDrive.setMaxOutput(0.5);
-        m_leftMotor.setInverted(true);
+        
+        setMaxOutput(0.5);
+        
+        m_rightMotor.setInverted(true);
+        m_leftMotor.setInverted(false);
         m_leftFollower.follow(m_leftMotor);
         m_rightFollower.follow(m_rightMotor);
     }
 
     public void arcadeDrive(double speed, double rotation)
     {
-        m_robotDrive.arcadeDrive(-speed, -rotation);
+        m_robotDrive.arcadeDrive(-speed, rotation * 0.8);
     }
     /**
      * Sets the max output of the drive. Useful for scaling the drive to drive more slowly.

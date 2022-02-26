@@ -20,9 +20,9 @@ public class RobotContainer {
     private final int axis_rotate = 2;
     private final GenericHID m_controller = new Joystick(0);
     private final JoystickButton m_boostButton = new JoystickButton(m_controller, 1);
+    private final JoystickButton m_dumpButton = new JoystickButton(m_controller, 2);
     private final JoystickButton m_armUpButton = new JoystickButton(m_controller, 6);
     private final JoystickButton m_armDownButton = new JoystickButton(m_controller, 4);
-    private final JoystickButton m_dumpButton = new JoystickButton(m_controller, 2);
     private final JoystickButton m_highGearButton = new JoystickButton(m_controller, 5);
     private final JoystickButton m_lowGearButton = new JoystickButton(m_controller, 3);
     private final JoystickButton m_pneumaticsStartButton = new JoystickButton(m_controller, 7);

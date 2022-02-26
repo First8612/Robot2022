@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * file in the resource
  * directory.
  */
-public class Robot extends TimedRobot {
+public class Ultron2 extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   /***
