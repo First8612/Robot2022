@@ -13,7 +13,7 @@ public class Bucket extends SubsystemBase {
             MotorType.kBrushed
         );
     private double m_speed = 0;
-    private double m_maxSpeed = 0.5; 
+    private double m_maxSpeed = 1; 
     
     public void forward() {
         m_speed = m_maxSpeed;

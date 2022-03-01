@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Subsystems.Dumper;
 
 public class ArmUp extends CommandBase {
-    private static Dumper m_dumper = new Dumper();
+    private static Dumper m_dumper = Dumper.getInstance();
 
     public ArmUp() {
         addRequirements(m_dumper);

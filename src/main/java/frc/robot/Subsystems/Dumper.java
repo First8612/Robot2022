@@ -12,10 +12,19 @@ public class Dumper extends SubsystemBase {
         new CANSparkMax(Constants.ArmMotorNumber, MotorType.kBrushless);
     private static RelativeEncoder m_encoder = m_armMotorCanSparkMax.getEncoder();
     private static int m_motorRevsPerOutputRevs = 5 * 7 * 9;
-    private static double m_upStop = 0.1 * m_motorRevsPerOutputRevs;
-    private static double m_speed = 0.3;
+    private static double m_upStop = 1 * m_motorRevsPerOutputRevs;
+    private static double m_speed = 0.5;
 
     private static TravelingDirection m_armTraveling = TravelingDirection.Stopped;
+
+    public static Dumper instance;
+    public static synchronized Dumper getInstance() {
+        if (instance == null) {
+            instance = new Dumper();
+        }
+
+        return instance;
+    }
 
     private enum TravelingDirection {
         GoingUp,
@@ -24,8 +33,9 @@ public class Dumper extends SubsystemBase {
     }
 
     public Dumper() {
+        m_armMotorCanSparkMax.setInverted(true);
         m_encoder.setPosition(0);
-        m_armMotorCanSparkMax.setOpenLoopRampRate(2); // set how fast the motor is allowed to speed up
+        // m_armMotorCanSparkMax.setOpenLoopRampRate(2); // set how fast the motor is allowed to speed up
     }
 
     public void armUp() {
@@ -48,6 +58,11 @@ public class Dumper extends SubsystemBase {
 
     public boolean getIsDown() {
         return m_encoder.getPosition() <= 0;
+    }
+
+    public void stop(){
+        m_armMotorCanSparkMax.set(0);
+        m_armTraveling = TravelingDirection.Stopped;
     }
 
     @Override

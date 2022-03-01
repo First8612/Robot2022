@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -20,20 +21,21 @@ public class RobotContainer {
     private final int axis_forwardBack = 1;
     private final int axis_rotate = 2;
     private final GenericHID m_controller = new Joystick(0);
-    private final JoystickButton m_boostButton = new JoystickButton(m_controller, 1);
-    private final JoystickButton m_dumpButton = new JoystickButton(m_controller, 2);
+    private final JoystickButton m_boostButton = new JoystickButton(m_controller, 2);
+    private final JoystickButton m_dumpButton = new JoystickButton(m_controller, 1);
     private final JoystickButton m_armUpButton = new JoystickButton(m_controller, 6);
     private final JoystickButton m_armDownButton = new JoystickButton(m_controller, 4);
     private final JoystickButton m_highGearButton = new JoystickButton(m_controller, 5);
     private final JoystickButton m_lowGearButton = new JoystickButton(m_controller, 3);
-    private final JoystickButton m_pneumaticsStartButton = new JoystickButton(m_controller, 7);
-    private final JoystickButton m_pneumaticsStopButton = new JoystickButton(m_controller, 8);
+    private final JoystickButton m_NOOOOOButton = new JoystickButton(m_controller, 7);
+    private final JoystickButton m_testButton = new JoystickButton(m_controller, 12);
 
     // The robot's subsystems
     private final Drivetrain m_robotDrive = new Drivetrain();
     private final Pneumatics m_pneumatics = new Pneumatics();
     private final Intake m_intake = new Intake();
     private final Bucket m_bucket = new Bucket();
+    private final Dumper m_dumper = Dumper.getInstance();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -55,6 +57,12 @@ public class RobotContainer {
             m_robotDrive)
         );
     }
+
+    public void init(){
+      m_pneumatics.start();
+      m_intake.enable();
+      m_bucket.reverse();
+    }
   
     /**
      * Use this method to define your button->command mappings. Buttons can be created by
@@ -75,18 +83,15 @@ public class RobotContainer {
             .whenPressed(new ArmDown()); 
         
         m_dumpButton
-            .whenPressed(new TakeADump());
+            .whenPressed(new TakeADump(m_bucket));
 
-        m_pneumaticsStartButton
-          .whenPressed(() -> {
-            m_pneumatics.start();
-            m_intake.enable();
-          });
-
-        m_pneumaticsStopButton
+        m_NOOOOOButton
           .whenPressed(() -> {
             m_pneumatics.stop();
             m_intake.disable();
+            m_bucket.stop();
+            m_dumper.stop();
+            CommandScheduler.getInstance().cancelAll();
           });
 
         m_highGearButton
@@ -94,6 +99,9 @@ public class RobotContainer {
         
         m_lowGearButton
           .whenPressed(() -> m_pneumatics.setLowGear());
+
+        m_testButton
+          .whenPressed(() -> m_bucket.forward());
     }
   }
   
