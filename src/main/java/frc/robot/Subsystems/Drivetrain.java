@@ -15,7 +15,7 @@ public class Drivetrain extends SubsystemBase {
     public Drivetrain() {
         
         setMaxOutput(0.5);
-        
+
         m_rightMotor.setInverted(true);
         m_leftMotor.setInverted(false);
         m_leftFollower.follow(m_leftMotor);
@@ -24,14 +24,14 @@ public class Drivetrain extends SubsystemBase {
 
     public void arcadeDrive(double speed, double rotation)
     {
-        m_robotDrive.arcadeDrive(-speed, rotation * 0.8);
+        m_robotDrive.arcadeDrive(-speed, rotation);
     }
     /**
      * Sets the max output of the drive. Useful for scaling the drive to drive more slowly.
      *
     * @param maxOutput the maximum output to which the drive will be constrained
     */
-    public void setMaxOutput(double maxOutput) {
-        m_robotDrive.setMaxOutput(maxOutput);
-    }
+     public void setMaxOutput(double maxOutput) {
+         m_robotDrive.setMaxOutput(maxOutput);
+     }
 }

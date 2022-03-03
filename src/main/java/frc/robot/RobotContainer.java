@@ -1,8 +1,10 @@
 package frc.robot;
 
+import java.sql.PseudoColumnUsage;
+
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -18,17 +20,16 @@ import frc.robot.Subsystems.*;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    private final int axis_forwardBack = 1;
-    private final int axis_rotate = 2;
-    private final GenericHID m_controller = new Joystick(0);
-    private final JoystickButton m_boostButton = new JoystickButton(m_controller, 2);
-    private final JoystickButton m_dumpButton = new JoystickButton(m_controller, 1);
-    private final JoystickButton m_armUpButton = new JoystickButton(m_controller, 6);
-    private final JoystickButton m_armDownButton = new JoystickButton(m_controller, 4);
-    private final JoystickButton m_highGearButton = new JoystickButton(m_controller, 5);
-    private final JoystickButton m_lowGearButton = new JoystickButton(m_controller, 3);
-    private final JoystickButton m_NOOOOOButton = new JoystickButton(m_controller, 7);
-    private final JoystickButton m_testButton = new JoystickButton(m_controller, 12);
+    private final int axis_forwardBack = PS4Controller.Axis.kLeftY.value;
+    private final int axis_rotate = PS4Controller.Axis.kRightX.value;
+    private final GenericHID m_controller = new XboxController(0);
+    private final JoystickButton m_boostButton = new JoystickButton(m_controller, PS4Controller.Button.kL1.value);
+    private final JoystickButton m_dumpButton = new JoystickButton(m_controller, PS4Controller.Button.kCross.value);
+    private final JoystickButton m_armUpButton = new JoystickButton(m_controller, PS4Controller.Button.kL2.value);
+    private final JoystickButton m_armDownButton = new JoystickButton(m_controller, PS4Controller.Button.kR2.value);
+    private final JoystickButton m_highGearButton = new JoystickButton(m_controller, PS4Controller.Button.kTriangle.value);
+    private final JoystickButton m_lowGearButton = new JoystickButton(m_controller, PS4Controller.Button.kCircle.value);
+    private final JoystickButton m_NOButton = new JoystickButton(m_controller, PS4Controller.Button.kTouchpad.value);
 
     // The robot's subsystems
     private final Drivetrain m_robotDrive = new Drivetrain();
@@ -72,9 +73,9 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
       // Drive at full speed when trigger button is held
-        m_boostButton
-          .whenPressed(() -> m_robotDrive.setMaxOutput(1))
-          .whenReleased(() -> m_robotDrive.setMaxOutput(0.5));
+         m_boostButton
+           .whenPressed(() -> m_robotDrive.setMaxOutput(1))
+           .whenReleased(() -> m_robotDrive.setMaxOutput(0.5));
 
         m_armUpButton
             .whenPressed(new ArmUp());
@@ -85,7 +86,7 @@ public class RobotContainer {
         m_dumpButton
             .whenPressed(new TakeADump(m_bucket));
 
-        m_NOOOOOButton
+        m_NOButton
           .whenPressed(() -> {
             m_pneumatics.stop();
             m_intake.disable();
@@ -99,9 +100,6 @@ public class RobotContainer {
         
         m_lowGearButton
           .whenPressed(() -> m_pneumatics.setLowGear());
-
-        m_testButton
-          .whenPressed(() -> m_bucket.forward());
     }
   }
   

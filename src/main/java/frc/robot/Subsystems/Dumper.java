@@ -12,8 +12,8 @@ public class Dumper extends SubsystemBase {
         new CANSparkMax(Constants.ArmMotorNumber, MotorType.kBrushless);
     private static RelativeEncoder m_encoder = m_armMotorCanSparkMax.getEncoder();
     private static int m_motorRevsPerOutputRevs = 5 * 7 * 9;
-    private static double m_upStop = 1 * m_motorRevsPerOutputRevs;
-    private static double m_speed = 0.5;
+    private static double m_upStop = 0.30 * m_motorRevsPerOutputRevs;
+    private static double m_speed = 0.2;
 
     private static TravelingDirection m_armTraveling = TravelingDirection.Stopped;
 
