@@ -45,4 +45,8 @@ public class Pneumatics extends SubsystemBase {
     {
         m_gearSwitcher.set(lowGear);
     }
+
+    public void toggleGear() {
+        m_gearSwitcher.toggle();
+    }
 }

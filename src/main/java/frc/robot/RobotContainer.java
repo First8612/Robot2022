@@ -1,7 +1,4 @@
 package frc.robot;
-
-import java.sql.PseudoColumnUsage;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
@@ -10,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Commands.ArmDown;
 import frc.robot.Commands.ArmUp;
+import frc.robot.Commands.AutoCommand;
 import frc.robot.Commands.TakeADump;
 import frc.robot.Subsystems.*;
 
@@ -24,11 +22,10 @@ public class RobotContainer {
     private final int axis_rotate = PS4Controller.Axis.kRightX.value;
     private final GenericHID m_controller = new XboxController(0);
     private final JoystickButton m_boostButton = new JoystickButton(m_controller, PS4Controller.Button.kL1.value);
+    private final JoystickButton m_pneumButton = new JoystickButton(m_controller, PS4Controller.Button.kR1.value);
     private final JoystickButton m_dumpButton = new JoystickButton(m_controller, PS4Controller.Button.kCross.value);
     private final JoystickButton m_armUpButton = new JoystickButton(m_controller, PS4Controller.Button.kL2.value);
     private final JoystickButton m_armDownButton = new JoystickButton(m_controller, PS4Controller.Button.kR2.value);
-    private final JoystickButton m_highGearButton = new JoystickButton(m_controller, PS4Controller.Button.kTriangle.value);
-    private final JoystickButton m_lowGearButton = new JoystickButton(m_controller, PS4Controller.Button.kCircle.value);
     private final JoystickButton m_NOButton = new JoystickButton(m_controller, PS4Controller.Button.kTouchpad.value);
 
     // The robot's subsystems
@@ -37,6 +34,10 @@ public class RobotContainer {
     private final Intake m_intake = new Intake();
     private final Bucket m_bucket = new Bucket();
     private final Dumper m_dumper = Dumper.getInstance();
+
+    public void runAutonomous() {
+      CommandScheduler.getInstance().schedule(new AutoCommand(m_robotDrive, m_bucket));
+    }
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -94,12 +95,10 @@ public class RobotContainer {
             m_dumper.stop();
             CommandScheduler.getInstance().cancelAll();
           });
-
-        m_highGearButton
-          .whenPressed(() -> m_pneumatics.setHighGear());
-        
-        m_lowGearButton
-          .whenPressed(() -> m_pneumatics.setLowGear());
+          m_pneumButton
+            .whenPressed(() -> {
+              m_pneumatics.toggleGear();
+          });
     }
   }
   
