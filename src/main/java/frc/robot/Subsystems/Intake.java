@@ -12,7 +12,7 @@ public class Intake extends SubsystemBase {
     private double m_speed = 0; 
 
     public void enable() {
-        m_speed = -1;
+        m_speed = 1;
     }
 
     public void disable() {

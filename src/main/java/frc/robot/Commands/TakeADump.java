@@ -14,7 +14,7 @@ public class TakeADump extends SequentialCommandGroup {
           new BucketEject(bucket),
           new InstantCommand(() -> bucket.stop(), bucket),
           new ArmDown(),
-          new InstantCommand(() -> bucket.reverse(), bucket)
+          new InstantCommand(() -> bucket.intake(), bucket)
         );
     }
 

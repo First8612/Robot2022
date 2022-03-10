@@ -35,15 +35,24 @@ public class RobotContainer {
     private final Bucket m_bucket = new Bucket();
     private final Dumper m_dumper = Dumper.getInstance();
 
-    public void runAutonomous() {
-      CommandScheduler.getInstance().schedule(new AutoCommand(m_robotDrive, m_bucket));
-    }
-
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
       CommandScheduler.getInstance().registerSubsystem(m_intake);
       CommandScheduler.getInstance().registerSubsystem(m_bucket);
+    }
 
+    public void init(){
+      m_pneumatics.start();
+      //m_intake.enable();
+      //m_bucket.intake();
+    }
+
+    public void autonomousInit() {
+      CommandScheduler.getInstance().schedule(new AutoCommand(m_robotDrive, m_bucket, m_intake, m_dumper));
+    }
+
+    public void teleopInit() {
+      
       // Configure the button bindings
       configureButtonBindings();
   
@@ -58,12 +67,9 @@ public class RobotContainer {
             },
             m_robotDrive)
         );
-    }
 
-    public void init(){
-      m_pneumatics.start();
-      m_intake.enable();
-      m_bucket.reverse();
+      //m_intake.enable();
+      //m_bucket.intake();
     }
   
     /**
@@ -74,9 +80,9 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
       // Drive at full speed when trigger button is held
-         m_boostButton
-           .whenPressed(() -> m_robotDrive.setMaxOutput(1))
-           .whenReleased(() -> m_robotDrive.setMaxOutput(0.5));
+          //  m_boostButton
+          //    .whenPressed(() -> m_robotDrive.setMaxOutput(1))
+          //    .whenReleased(() -> m_robotDrive.setMaxOutput(0.7));
 
         m_armUpButton
             .whenPressed(new ArmUp());

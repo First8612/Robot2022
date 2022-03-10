@@ -16,7 +16,7 @@ public class BucketEject extends CommandBase {
     
     @Override
     public void initialize() {
-        m_bucket.forward();
+        m_bucket.eject();
         m_timer.start();
     }
 

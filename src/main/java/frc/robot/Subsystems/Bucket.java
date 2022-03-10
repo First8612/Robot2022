@@ -15,11 +15,11 @@ public class Bucket extends SubsystemBase {
     private double m_speed = 0;
     private double m_maxSpeed = 1; 
     
-    public void forward() {
+    public void eject() {
         m_speed = m_maxSpeed;
     }
 
-    public void reverse() {
+    public void intake() {
         m_speed = -m_maxSpeed;
     }
 

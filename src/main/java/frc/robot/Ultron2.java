@@ -40,7 +40,7 @@ public class Ultron2 extends TimedRobot {
   /** This function is run once each time the robot enters autonomous mode. */
   @Override
   public void autonomousInit() {
-    m_robotContainer.runAutonomous();
+    m_robotContainer.autonomousInit();
   }
 
   /** This function is called periodically during autonomous. */
@@ -54,6 +54,7 @@ public class Ultron2 extends TimedRobot {
    */
   @Override
   public void teleopInit() {
+    m_robotContainer.teleopInit();
   }
 
   /**

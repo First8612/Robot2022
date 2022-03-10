@@ -34,6 +34,8 @@ public class Dumper extends SubsystemBase {
     public Dumper() {
         m_armMotorCanSparkMax.setInverted(true);
         m_encoder.setPosition(0);
+        //m_encoder.setPosition(0.22 * m_motorRevsPerOutputRevs);
+        
         // m_armMotorCanSparkMax.setOpenLoopRampRate(2); // set how fast the motor is allowed to speed up
     }
 

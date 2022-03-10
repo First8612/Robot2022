@@ -14,7 +14,7 @@ public class Drivetrain extends SubsystemBase {
 
     public Drivetrain() {
         
-        setMaxOutput(0.5);
+        setMaxOutput(1);
 
         m_rightMotor.setInverted(true);
         m_leftMotor.setInverted(false);
