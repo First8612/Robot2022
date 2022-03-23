@@ -30,6 +30,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final Drivetrain m_robotDrive = new Drivetrain();
   private final Pneumatics m_pneumatics = new Pneumatics();
+  private final Shooter m_shooter = new Shooter();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -40,7 +41,7 @@ public class RobotContainer {
   }
 
   public void autonomousInit() {
-    CommandScheduler.getInstance().schedule(new AutoCommand(m_robotDrive));
+    CommandScheduler.getInstance().schedule(new AutoCommand(m_robotDrive, m_shooter));
   }
 
   public void teleopInit() {
@@ -58,9 +59,6 @@ public class RobotContainer {
               m_robotDrive.arcadeDrive(speed, rotation);
             },
             m_robotDrive));
-
-    // m_intake.enable();
-    // m_bucket.intake();
   }
 
   /**
@@ -86,7 +84,7 @@ public class RobotContainer {
 
     m_pneumButton
         .whenPressed(() -> {
-          m_pneumatics.toggleGear();
+          m_robotDrive.toggleGear();
         });
   }
 }
