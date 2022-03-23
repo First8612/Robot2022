@@ -5,11 +5,9 @@ import frc.robot.Subsystems.*;
 
 public class AutoCommand extends SequentialCommandGroup {
     
-    public AutoCommand(Drivetrain drivetrain, Bucket bucket, Intake intake, Dumper dumper) {
+    public AutoCommand(Drivetrain drivetrain) {
         addRequirements(drivetrain);
         addCommands(
-            //new ArmDown(),
-            //new TakeADump(bucket),
             new AutoDrive(drivetrain, 0.7, 2)
         );
     }
