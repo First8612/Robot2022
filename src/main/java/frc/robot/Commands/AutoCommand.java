@@ -9,6 +9,9 @@ public class AutoCommand extends SequentialCommandGroup {
         addRequirements(drivetrain);
         addRequirements(shooter);
         addCommands(
+            // start up the launcher wheel
+            new InstantCommand(() -> shooter.EnableLauncher()),
+
             // backup for two seconds
             new AutoDrive(drivetrain, 0.7, -2),
 
@@ -17,6 +20,9 @@ public class AutoCommand extends SequentialCommandGroup {
 
             // wait for the shoot cycle to finish
             new WaitCommand(1),
+
+            // disable the launcher wheel
+            new InstantCommand(() -> shooter.DisableLauncher()),
 
             // finish backing up the required distance
             new AutoDrive(drivetrain, 0.7, -1)

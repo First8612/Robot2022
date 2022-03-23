@@ -24,11 +24,11 @@ public class Shooter extends SubsystemBase {
     private Timer m_feedExtendTimer = new Timer();
 
 
-    public void Enable() {
+    public void EnableLauncher() {
         m_launcherMotorSpeed = 1;
     }
 
-    public void Disable() {
+    public void DisableLauncher() {
         m_launcherMotorSpeed = 0;
     }
 
