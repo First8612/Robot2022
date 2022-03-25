@@ -12,9 +12,6 @@ public class AutoCommand extends SequentialCommandGroup {
             // start up the launcher wheel
             new InstantCommand(() -> shooter.EnableLauncher()),
 
-            // backup for two seconds
-            new AutoDrive(drivetrain, 0.7, -2),
-
             // shoot the ball
             new Shoot(shooter),
 
@@ -24,8 +21,8 @@ public class AutoCommand extends SequentialCommandGroup {
             // disable the launcher wheel
             new InstantCommand(() -> shooter.DisableLauncher()),
 
-            // finish backing up the required distance
-            new AutoDrive(drivetrain, 0.7, -1)
+            // backup for two seconds
+            new AutoDrive(drivetrain, 0.7, -2)
         );
     }
 }

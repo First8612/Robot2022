@@ -26,10 +26,12 @@ public class RobotContainer {
   // PS4Controller.Button.kL1.value);
   private final JoystickButton m_pneumButton = new JoystickButton(m_controller, PS4Controller.Button.kR1.value);
   private final JoystickButton m_NOButton = new JoystickButton(m_controller, PS4Controller.Button.kTouchpad.value);
+  private final JoystickButton m_climbButton = new JoystickButton(m_controller, PS4Controller.Button.kR2.value);
 
   // The robot's subsystems
   private final Drivetrain m_robotDrive = new Drivetrain();
   private final Pneumatics m_pneumatics = new Pneumatics();
+  private final Climber m_climber = new Climber();
   private final Shooter m_shooter = new Shooter();
 
   /**
@@ -85,6 +87,11 @@ public class RobotContainer {
     m_pneumButton
         .whenPressed(() -> {
           m_robotDrive.toggleGear();
+        });
+
+    m_climbButton
+        .whenPressed(() -> {
+          
         });
   }
 }
