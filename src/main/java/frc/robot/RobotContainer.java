@@ -91,7 +91,11 @@ public class RobotContainer {
 
     m_climbButton
         .whenPressed(() -> {
-          
+          m_climber.set();
+        })
+
+        .whenReleased(() -> {
+          m_climber.stop();
         });
   }
 }

@@ -5,9 +5,10 @@ import frc.robot.Subsystems.Shooter;
 
 public class Shoot extends SequentialCommandGroup {
     public Shoot(Shooter shooter) {
-        super(
+        addCommands(
             // feed the ball to shoot it
-            new InstantCommand(() -> { shooter.Feed(); })
+            // new InstantCommand(() -> { shooter.Feed(); })
+
         );
     }
 }

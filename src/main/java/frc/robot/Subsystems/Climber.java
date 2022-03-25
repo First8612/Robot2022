@@ -1,74 +1,53 @@
 package frc.robot.Subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-//Things to change after testing: upStop, motor speed, what to put for getPoition in getIsDown
 
 public class Climber extends SubsystemBase {
     private static CANSparkMax m_climberMotor = new CANSparkMax(Constants.ClimberMotor, MotorType.kBrushless);
-    private static RelativeEncoder m_encoder = m_climberMotor.getEncoder();
-    private static double m_upStop = 5;
+    private double m_climberMotorSpeed = 0;
 
-    private static upOrDown m_climbDirection = upOrDown.Stopped;
-
-    private enum upOrDown {
-        GoingUp,
-        GoingDown,
-        Stopped
-    }
+    // private DoubleSolenoid m_climbSolenoid = 
+    // new DoubleSolenoid(
+    //         PneumaticsModuleType.CTREPCM, 
+    //         Constants.ClimberDownSolenoidChannel, 
+    //         Constants.ClimberUpSolenoidChannel
+    // );
+    // private DoubleSolenoid.Value m_climberDown = DoubleSolenoid.Value.kForward;
+    // private DoubleSolenoid.Value m_climberUp = DoubleSolenoid.Value.kReverse;
 
     public Climber() {
         m_climberMotor.setInverted(true);
-        m_encoder.setPosition(0);
+        m_climberMotor.setIdleMode(IdleMode.kBrake);
     }
 
-    public void climbUp() {
-        if (getIsUp())
-            return;
+    // public void climbUp() {
+    //     m_climbSolenoid.set(m_climberUp);
+    // }
 
-        m_climberMotor.set(.5);
-        m_climbDirection = upOrDown.GoingUp;
-    }
+    // public void climbDown() {
+    //     m_climbSolenoid.set(m_climberDown);
+    // }
+    
 
-    public void climbDown() {
-        if (getIsDown())
-            return;
-
-        m_climberMotor.set(.5);
-        m_climbDirection = upOrDown.GoingDown;
+    public void set() {
+        m_climberMotorSpeed = 0.5;
     }
 
     public void stop() {
-        m_climberMotor.set(0);
-        m_climbDirection = upOrDown.Stopped;
+        m_climberMotorSpeed = 0;
     }
 
-    public boolean getIsUp() {
-        return m_encoder.getPosition() >= m_upStop;
-    }
 
-    public boolean getIsDown() {
-        return m_encoder.getPosition() <= 0;
-    }
 
     @Override
     public void periodic() {
-        if (m_climbDirection == upOrDown.GoingUp) {
-            if (getIsUp()) {
-                m_climberMotor.set(0);
-                m_climbDirection = upOrDown.Stopped;
-            }
-        } else if (m_climbDirection == upOrDown.GoingDown) {
-            if (getIsDown()) {
-                m_climberMotor.set(0);
-                m_climbDirection = upOrDown.Stopped;
-            }
-        }
-
+       m_climberMotor.set(m_climberMotorSpeed);
     }
-
 }

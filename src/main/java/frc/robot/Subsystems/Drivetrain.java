@@ -17,7 +17,7 @@ public class Drivetrain extends SubsystemBase {
     public static CANSparkMax m_rightFollower = new CANSparkMax(4, MotorType.kBrushed);    
     private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
 
-    private double m_defaultSpeed = 0.5;
+    private double m_defaultSpeed = 1;
 
     // gear changing section
     private DoubleSolenoid m_gearSwitcher = 
