@@ -8,7 +8,7 @@ public class AutoCommand extends SequentialCommandGroup {
     public AutoCommand(Drivetrain drivetrain) {
         addRequirements(drivetrain);
         addCommands(
-            new AutoDrive(drivetrain, 0.7, 2)
+            new AutoDrive(drivetrain, -0.7, 3)
         );
     }
 }
