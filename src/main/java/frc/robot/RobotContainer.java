@@ -22,11 +22,10 @@ public class RobotContainer {
   private final int axis_forwardBack = PS4Controller.Axis.kLeftY.value;
   private final int axis_rotate = PS4Controller.Axis.kRightX.value;
   private final GenericHID m_controller = new XboxController(0);
-  // private final JoystickButton m_boostButton = new JoystickButton(m_controller,
-  // PS4Controller.Button.kL1.value);
   private final JoystickButton m_pneumButton = new JoystickButton(m_controller, PS4Controller.Button.kR1.value);
   private final JoystickButton m_NOButton = new JoystickButton(m_controller, PS4Controller.Button.kTouchpad.value);
   private final JoystickButton m_climbButton = new JoystickButton(m_controller, PS4Controller.Button.kR2.value);
+  private final JoystickButton m_climbUnleash = new JoystickButton(m_controller, PS4Controller.Button.kL2.value);
 
   // The robot's subsystems
   private final Drivetrain m_robotDrive = new Drivetrain();
@@ -73,11 +72,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Drive at full speed when trigger button is held
-    // m_boostButton
-    // .whenPressed(() -> m_robotDrive.setMaxOutput(1))
-    // .whenReleased(() -> m_robotDrive.setMaxOutput(0.7));
-
     m_NOButton
         .whenPressed(() -> {
           m_pneumatics.stop();
@@ -91,11 +85,21 @@ public class RobotContainer {
 
     m_climbButton
         .whenPressed(() -> {
+          m_climber.climbUnlock();
           m_climber.set();
         })
 
         .whenReleased(() -> {
           m_climber.stop();
+        });
+
+    m_climbUnleash
+        .whenPressed(() -> {
+          m_climber.climbUnlock();
+        })
+
+        .whenReleased(() -> {
+          m_climber.climbLock();
         });
   }
 }

@@ -13,27 +13,28 @@ public class Climber extends SubsystemBase {
     private static CANSparkMax m_climberMotor = new CANSparkMax(Constants.ClimberMotor, MotorType.kBrushless);
     private double m_climberMotorSpeed = 0;
 
-    // private DoubleSolenoid m_climbSolenoid = 
-    // new DoubleSolenoid(
-    //         PneumaticsModuleType.CTREPCM, 
-    //         Constants.ClimberDownSolenoidChannel, 
-    //         Constants.ClimberUpSolenoidChannel
-    // );
-    // private DoubleSolenoid.Value m_climberDown = DoubleSolenoid.Value.kForward;
-    // private DoubleSolenoid.Value m_climberUp = DoubleSolenoid.Value.kReverse;
+    private DoubleSolenoid m_climbSolenoid = 
+    new DoubleSolenoid(
+            PneumaticsModuleType.CTREPCM, 
+            Constants.ClimberExtendSolenoidChannel, 
+            Constants.ClimberRetractSolenoidChannel
+    );
+
+    private DoubleSolenoid.Value m_climberExtend = DoubleSolenoid.Value.kReverse;
+    private DoubleSolenoid.Value m_climberRetract = DoubleSolenoid.Value.kForward;
 
     public Climber() {
         m_climberMotor.setInverted(true);
         m_climberMotor.setIdleMode(IdleMode.kBrake);
     }
 
-    // public void climbUp() {
-    //     m_climbSolenoid.set(m_climberUp);
-    // }
+    public void climbUnlock() {
+        m_climbSolenoid.set(m_climberExtend);
+    }
 
-    // public void climbDown() {
-    //     m_climbSolenoid.set(m_climberDown);
-    // }
+    public void climbLock() {
+        m_climbSolenoid.set(m_climberRetract);
+    }
     
 
     public void set() {

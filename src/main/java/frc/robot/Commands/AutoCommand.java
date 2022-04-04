@@ -22,7 +22,7 @@ public class AutoCommand extends SequentialCommandGroup {
             new InstantCommand(() -> shooter.DisableLauncher(), shooter),
 
             // backup for two seconds
-            new AutoDrive(drivetrain, -1, 2)
+            new AutoDrive(drivetrain, -0.6, 2)
         );
     }
 }

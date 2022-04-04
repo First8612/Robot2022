@@ -11,10 +11,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
-    public static CANSparkMax m_leftMotor = new CANSparkMax(1, MotorType.kBrushed);
-    public static CANSparkMax m_leftFollower = new CANSparkMax(2, MotorType.kBrushed);
-    public static CANSparkMax m_rightMotor = new CANSparkMax(3, MotorType.kBrushed);
-    public static CANSparkMax m_rightFollower = new CANSparkMax(4, MotorType.kBrushed);    
+    public static CANSparkMax m_leftMotor = new CANSparkMax(1, MotorType.kBrushless);
+    public static CANSparkMax m_leftFollower = new CANSparkMax(2, MotorType.kBrushless);
+    public static CANSparkMax m_rightMotor = new CANSparkMax(3, MotorType.kBrushless);
+    public static CANSparkMax m_rightFollower = new CANSparkMax(4, MotorType.kBrushless); 
+
     private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
 
     private double m_defaultSpeed = 1;
@@ -38,7 +39,7 @@ public class Drivetrain extends SubsystemBase {
         m_rightMotor.setIdleMode(IdleMode.kBrake);
 
         resetMaxSpeed();
-        m_gearSwitcher.set(lowGear);
+       m_gearSwitcher.set(lowGear);
     }
 
     public void arcadeDrive(double speed, double rotation)
