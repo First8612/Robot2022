@@ -35,6 +35,7 @@ public class Ultron2 extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    m_robotContainer.periodic();
   }
 
   /** This function is run once each time the robot enters autonomous mode. */

@@ -13,10 +13,10 @@ public class AutoCommand extends SequentialCommandGroup {
             new InstantCommand(() -> shooter.EnableLauncher(), shooter),
 
             // shoot the ball
-            // new Shoot(shooter),
+            // new InstantCommand(() -> shooter.Feed(), shooter,
 
             // wait for the shoot cycle to finish
-            new WaitCommand(2), 
+            new WaitCommand(1.5), 
 
             // disable the launcher wheel
             new InstantCommand(() -> shooter.DisableLauncher(), shooter),

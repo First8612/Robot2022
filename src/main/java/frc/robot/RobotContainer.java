@@ -3,9 +3,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Commands.*;
 import frc.robot.Subsystems.*;
 
@@ -23,9 +25,11 @@ public class RobotContainer {
   private final int axis_rotate = PS4Controller.Axis.kRightX.value;
   private final GenericHID m_controller = new XboxController(0);
   private final JoystickButton m_pneumButton = new JoystickButton(m_controller, PS4Controller.Button.kR1.value);
-  private final JoystickButton m_NOButton = new JoystickButton(m_controller, PS4Controller.Button.kTouchpad.value);
-  private final JoystickButton m_climbButton = new JoystickButton(m_controller, PS4Controller.Button.kR2.value);
-  private final JoystickButton m_climbUnleash = new JoystickButton(m_controller, PS4Controller.Button.kL2.value);
+  private final JoystickButton m_feedButton = new JoystickButton(m_controller, PS4Controller.Button.kL1.value);
+  private final JoystickButton m_resetButton = new JoystickButton(m_controller, PS4Controller.Button.kOptions.value);
+
+  private final POVButton m_PovUp_ClimberUp = new POVButton(m_controller, 0);
+  private final POVButton m_PovDown_ClimberDown = new POVButton(m_controller, 180);
 
   // The robot's subsystems
   private final Drivetrain m_robotDrive = new Drivetrain();
@@ -72,34 +76,56 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_NOButton
-        .whenPressed(() -> {
-          m_pneumatics.stop();
-          CommandScheduler.getInstance().cancelAll();
-        });
+    /**
+     * Buton summary:
+     * RB - gear toggle
+     * LB - feed ball (not working I don't think)
+     * POV Up - extend climbing arms
+     * POV Down - retract climbing arms
+     * Start - resets encoders, switches to low gear, and puts climbing motors into coast mode. (helpful for resetting robot after climb)
+     */
+
+
+
 
     m_pneumButton
         .whenPressed(() -> {
           m_robotDrive.toggleGear();
         });
 
-    m_climbButton
+    m_PovUp_ClimberUp
         .whenPressed(() -> {
-          m_climber.climbUnlock();
-          m_climber.set();
+          m_climber.extend();
         })
 
         .whenReleased(() -> {
           m_climber.stop();
         });
 
-    m_climbUnleash
+    m_PovDown_ClimberDown
         .whenPressed(() -> {
-          m_climber.climbUnlock();
+          m_climber.retract();
         })
 
         .whenReleased(() -> {
-          m_climber.climbLock();
+          m_climber.stop();
         });
+
+    m_feedButton
+        .whenPressed(() -> {
+          m_shooter.Feed();
+        });
+
+    m_resetButton
+        .whenPressed(() -> {
+          m_robotDrive.reset();
+          m_climber.reset();
+        });
+  }
+
+  public void periodic()
+  {
+    SmartDashboard.putNumber("Controller: POV", m_controller.getPOV());
+
   }
 }
