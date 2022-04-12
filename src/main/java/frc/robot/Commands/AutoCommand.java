@@ -10,7 +10,9 @@ public class AutoCommand extends SequentialCommandGroup {
         addRequirements(shooter);
         addCommands(
             // start up the launcher wheel
-            new InstantCommand(() -> shooter.EnableLauncher(), shooter),
+            // new InstantCommand(() -> shooter.EnableFlywheel(), shooter),
+
+            new DriveDistance(-0.1, 54, drivetrain),
 
             // shoot the ball
             new InstantCommand(() -> shooter.Feed(), shooter),
@@ -19,7 +21,7 @@ public class AutoCommand extends SequentialCommandGroup {
             new WaitCommand(1.5), 
 
             // disable the launcher wheel
-            new InstantCommand(() -> shooter.DisableLauncher(), shooter),
+            new InstantCommand(() -> shooter.DisableFlywheel(), shooter),
 
             // backup for two seconds
             new AutoDrive(drivetrain, -0.6, 2)

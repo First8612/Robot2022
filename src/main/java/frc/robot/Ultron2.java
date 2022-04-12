@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
 // all of these are the "packages" or "libraries" that this code is using
 // we do this to avoid naming problems
 import edu.wpi.first.wpilibj.TimedRobot;

@@ -2,6 +2,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -27,6 +30,7 @@ public class RobotContainer {
   private final JoystickButton m_pneumButton = new JoystickButton(m_controller, PS4Controller.Button.kR1.value);
   private final JoystickButton m_feedButton = new JoystickButton(m_controller, PS4Controller.Button.kL1.value);
   private final JoystickButton m_resetButton = new JoystickButton(m_controller, PS4Controller.Button.kOptions.value);
+  private JoystickButton m_flywheelButton = new JoystickButton(m_controller, PS4Controller.Button.kTriangle.value);
 
   private final POVButton m_PovUp_ClimberUp = new POVButton(m_controller, 0);
   private final POVButton m_PovDown_ClimberDown = new POVButton(m_controller, 180);
@@ -36,6 +40,16 @@ public class RobotContainer {
   private final Pneumatics m_pneumatics = new Pneumatics();
   private final Climber m_climber = new Climber();
   private final Shooter m_shooter = new Shooter();
+  private PowerDistribution m_pdp = new PowerDistribution();
+  private PneumaticsControlModule m_pcm = new PneumaticsControlModule();
+
+  // commands
+  private Shoot m_shootCommand = new Shoot(m_shooter);
+
+  public RobotContainer() {
+    SmartDashboard.putData(m_robotDrive);
+    SmartDashboard.putData(m_shootCommand);
+  }
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -43,6 +57,12 @@ public class RobotContainer {
 
   public void init() {
     m_pneumatics.start();
+
+    if (m_pcm.getSolenoidVoltageFault()) System.out.println("Solenoid Voltage Fault");
+    if (m_pcm.getSolenoidVoltageStickyFault()) System.out.println("Solenoid Voltage Sticky Fault");
+
+    m_pdp.clearStickyFaults();
+    m_pcm.clearAllStickyFaults();
   }
 
   public void autonomousInit() {
@@ -112,15 +132,18 @@ public class RobotContainer {
         });
 
     m_feedButton
-        .whenPressed(() -> {
-          m_shooter.Feed();
-        });
+        .whenPressed(m_shootCommand);
 
     m_resetButton
         .whenPressed(() -> {
           m_robotDrive.reset();
           m_climber.reset();
         });
+
+    m_flywheelButton
+        .whenPressed(() -> {
+          m_shooter.toggleFlywheel();
+        }, m_shooter);
   }
 
   public void periodic()

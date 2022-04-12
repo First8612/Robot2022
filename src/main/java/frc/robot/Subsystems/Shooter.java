@@ -11,7 +11,7 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
     private CANSparkMax m_launcherWheelMotor = new CANSparkMax(Constants.ShooterLaunchMotor, MotorType.kBrushed);
-    private double m_launcherMotorSpeed = 0;
+    private boolean m_flywheelEnabled;
 
     private DoubleSolenoid m_feedSolenoid = 
     new DoubleSolenoid(
@@ -24,12 +24,16 @@ public class Shooter extends SubsystemBase {
     private Timer m_feedExtendTimer = new Timer(); 
 
 
-    public void EnableLauncher() {
-        m_launcherMotorSpeed = 0.8;
+    public void EnableFlywheel() {
+        m_flywheelEnabled = true;
     }
 
-    public void DisableLauncher() {
-        m_launcherMotorSpeed = 0;
+    public void DisableFlywheel() {
+        m_flywheelEnabled = false;
+    }
+
+    public void toggleFlywheel() {
+        m_flywheelEnabled = !m_flywheelEnabled;
     }
 
     public void Feed() {
@@ -39,7 +43,10 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        m_launcherWheelMotor.set(m_launcherMotorSpeed);
+        var motorSpeed = 0.0;
+
+        if (m_flywheelEnabled) motorSpeed = 1;
+        m_launcherWheelMotor.set(motorSpeed);
 
         if (m_feedExtendTimer.hasElapsed(1)) {
             m_feedSolenoid.set(m_feedRetracted);

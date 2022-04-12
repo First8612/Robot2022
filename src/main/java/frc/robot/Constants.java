@@ -9,6 +9,6 @@ public class Constants {
     public static int PneumaticsLowGearSolenoidChannel = 7;
     public static int ClimberExtendSolenoidChannel = 4;
     public static int ClimberRetractSolenoidChannel = 5;
-    public static int PneumaticsShooterFeedExtendSolenoidChannel = 2;
-    public static int PneumaticsShooterFeedRetractSolenoidChannel = 3;
+    public static int PneumaticsShooterFeedExtendSolenoidChannel = 4;
+    public static int PneumaticsShooterFeedRetractSolenoidChannel = 5;
 }

@@ -44,6 +44,13 @@ public class Drivetrain extends SubsystemBase {
         m_rightFollower.follow(m_rightMotor);
         m_leftMotor.setIdleMode(IdleMode.kBrake);
         m_rightMotor.setIdleMode(IdleMode.kBrake);
+
+        for (var motor : m_motors) {
+            motor.setClosedLoopRampRate(5);
+        }
+
+        addChild("GearSolenoid", m_gearSwitcher);
+        addChild("DifferentialDrive", m_robotDrive);
     }
 
     public void reset() {
@@ -70,6 +77,16 @@ public class Drivetrain extends SubsystemBase {
         m_robotDrive.setMaxOutput(maxOutput);
      }
 
+    public double getEncoderPosition() {
+        var sum = 0.0;
+
+        for (var motor : m_motors) {
+            sum += motor.getEncoder().getPosition();
+        }
+
+        return sum / 4.0;
+    }
+
     public void resetMaxSpeed() {
         m_robotDrive.setMaxOutput(m_defaultSpeed);
     }
@@ -86,14 +103,17 @@ public class Drivetrain extends SubsystemBase {
 
     public void toggleGear() {
         m_gearSwitcher.toggle();
+        System.out.println("DriveTrain: Gear Toggled");
     }
 
     
     @Override
     public void periodic() {
+        SmartDashboard.putString("Drivetrain: Gear Channel", m_gearSwitcher.get().toString());
         SmartDashboard.putNumber("Drivetrain: Right Lead Position", m_rightMotor.getEncoder().getPosition());
         SmartDashboard.putNumber("Drivetrain: Right Follower Position", m_rightFollower.getEncoder().getPosition());
         SmartDashboard.putNumber("Drivetrain: Left Lead Position", m_leftMotor.getEncoder().getPosition());
         SmartDashboard.putNumber("Drivetrain: Left Follower Position", m_leftFollower.getEncoder().getPosition());
+        SmartDashboard.putNumber("Drivetrain: Position (avg)", getEncoderPosition());
     }
 }
