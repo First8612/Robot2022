@@ -40,7 +40,7 @@ public class RobotContainer {
   private final Pneumatics m_pneumatics = new Pneumatics();
   private final Climber m_climber = new Climber();
   private final Shooter m_shooter = new Shooter();
-  private PowerDistribution m_pdp = new PowerDistribution();
+  // private PowerDistribution m_pdp = new PowerDistribution();
   private PneumaticsControlModule m_pcm = new PneumaticsControlModule();
 
   // commands
@@ -61,7 +61,7 @@ public class RobotContainer {
     if (m_pcm.getSolenoidVoltageFault()) System.out.println("Solenoid Voltage Fault");
     if (m_pcm.getSolenoidVoltageStickyFault()) System.out.println("Solenoid Voltage Sticky Fault");
 
-    m_pdp.clearStickyFaults();
+    // m_pdp.clearStickyFaults();
     m_pcm.clearAllStickyFaults();
   }
 
@@ -81,7 +81,7 @@ public class RobotContainer {
             () -> {
               double speed = m_controller.getRawAxis(axis_forwardBack);
               double rotation = m_controller.getRawAxis(axis_rotate);
-              m_robotDrive.arcadeDrive(speed, rotation);
+              m_robotDrive.arcadeDrive(-speed, rotation);
             },
             m_robotDrive));
   }

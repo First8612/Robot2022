@@ -19,7 +19,7 @@ public class DriveDistance extends CommandBase {
     @Override
     public void initialize() {
         m_startPosition = m_driveTrain.getEncoderPosition();
-        System.out.println(("autodrive: init"));
+        System.out.println("autodrive: init");
     }
     
     @Override

@@ -64,7 +64,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void arcadeDrive(double speed, double rotation)
     {
-        m_robotDrive.arcadeDrive(-speed, rotation * 0.75);
+        m_robotDrive.arcadeDrive(speed, rotation * 0.75);
         SmartDashboard.putNumber("Drivetrain: Speed", speed);
         SmartDashboard.putNumber("Drivetrain: Rotation", rotation);
     }
