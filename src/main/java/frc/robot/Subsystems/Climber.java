@@ -35,7 +35,7 @@ public class Climber extends SubsystemBase {
     public void extend() {
         m_retractionMotor.setIdleMode(IdleMode.kCoast);
         m_retractMotorSpeed = null;
-        m_extensionMotorSpeed = 0.2;
+        m_extensionMotorSpeed = 0.5;
     }
 
     public void retract() {
